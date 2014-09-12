@@ -1,0 +1,83 @@
+<!DOCTYPE HTML>
+<html>
+	<head>
+        <meta name="viewport"
+              content="width=device-width,initial-scale=1,maximum-scale=1,minimum-scale=1,user-scalable=no"/>
+        <meta name="apple-mobile-web-app-capable" content="yes"/>
+        <title>Deliteful Tutorial</title>
+		<link rel="stylesheet" href="css/app.css">
+		<link rel="stylesheet" href="bower_components/delite/themes/defaultapp.css">
+		<script src="bower_components/requirejs/require.js"></script>
+		<script>
+			require.config({
+				baseUrl: "bower_components"
+			});
+			require(["delite/register", "delite/theme!delite/themes/{{theme}}/global.css", "deliteful/ViewStack", 
+					"deliteful/SidePane", "deliteful/LinearLayout", "deliteful/Button", "deliteful/StarRating", 
+					"deliteful/ProgressBar", "deliteful/list/List", "requirejs-domready/domReady!"], function(register) {
+				register.parse();
+				document.body.style.display = "";
+				list.selectedItem = list.store.get("first");
+			});
+		</script>
+	</head>
+	<body style="display: none">
+
+	<!-- left menu side pane -->
+	<d-side-pane mode="push" position="start" id="leftPane">
+		<d-linear-layout class="height100">
+			<!-- left menu header -->
+			<d-linear-layout vertical="false" class="pageHeader">
+				<div class="fill titleStyle">Menu</div>
+			</d-linear-layout>
+			<!-- left menu content -->
+			<d-list id="list" on-selection-change="vs.show(event.newValue.id)" selectionMode="radio">
+				<d-list-store>
+					{"label": "First View", "id": "first" },
+					{"label": "Second View", "id": "second" },
+					{"label": "Third View", "id": "third" }
+					<!--{"label": "Fourth View", "id": "fourth" }-->
+				</d-list-store>
+			</d-list>
+		</d-linear-layout>
+	</d-side-pane>
+
+	<!-- page content -->
+	<d-linear-layout class="page width100 height100">
+		<!-- page content header -->
+		<d-linear-layout vertical="false" class="pageHeader">
+			<div><button is="d-button" iconClass="icon" class="toggle" onclick="leftPane.toggle()"></button></div>
+			<div class="fill titleStyle">deliteful app</div>
+		</d-linear-layout>
+		<!-- stacked content -->
+		<d-view-stack id="vs" class="fill">
+			<div id="first">
+				<p>1st view</p>
+				<d-star-rating value="0.5"></d-star-rating>
+			</div>
+			<div id="second">
+				<!-- fill the second view with content -->
+				<p>2nd view</p>
+				<d-progress-bar value=30 max="100" essage="Uploading..." style="width: 50%"></d-progress-bar>
+			</div>
+			<div id="third">
+				<!-- fill the third view with content -->
+				<span>3rd view</span>
+			</div>
+			<!-- other views 
+			<div id="fourth">
+			</div>
+			-->
+		</d-view-stack>
+		<!-- page content footer -->
+		<!-- 
+		<d-linear-layout vertical="false" class="pageFooter">
+			<div class="fill"><button is="d-button"></button></div>
+			<div class="fill"><button is="d-button"></button></div>
+			<div class="fill"><button is="d-button"></button></div>
+			<div class="fill"><button is="d-button"></button></div>
+		</d-linear-layout>
+		-->
+	</d-linear-layout>
+	</body>
+</html>

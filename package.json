@@ -1,0 +1,11 @@
+{
+	"name": "deliteful-tutorial",
+	"version": "0.0.1",
+	"private": true,
+	"devDependencies": {
+		"grunt": "~0.4.1"
+	},
+	"engines": {
+		"node": ">=0.8.0"
+	}
+}
