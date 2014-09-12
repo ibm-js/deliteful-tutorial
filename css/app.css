@@ -77,3 +77,24 @@
     margin: 9px;
     overflow-y: auto;
 }
+
+.d-side-pane {
+    border-right: 1px solid #357ebd;
+}
+.formLabel {
+    font-size: 14px;
+    font-weight: bold;
+    margin: 12px 6px 6px 6px;
+}
+.formInput {
+    margin: 6px;
+}
+.d-switch {
+    height: auto;
+    align-self: center;
+    margin: 12px 6px 6px 6px;
+}
+.d-select {
+    align-self: flex-start;
+    margin: 6px;
+}
