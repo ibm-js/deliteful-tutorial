@@ -1,53 +1,22 @@
-.pageHeader, .pageFooter{
-	background-color: #428bca;
-	color: white;
-}
-
 .pageHeader {
-	height: 36px;
-	border-bottom: 2px solid #357ebd;
-	padding: 0.3em;
+    background-color: #428bca;
+    color: white;
+    height: 48px;
+    border-bottom: 2px solid #357ebd;
+    padding: 0.3em;
 }
 
-.pageFooter {
-	border-top: 2px solid #357ebd;
-	padding-top: 0.3em;
-	padding-bottom: 0.3em;
+.titleStyle {
+    text-align: center;
+    line-height: 40px;
+    font-weight: bold;
+    font-size: 16px;
 }
 
-.pageFooter > div {
-	text-align: center;
+.d-button {
+    border-radius: 0;
 }
 
-.d-list[aria-selectable="true"] .d-list-item::before {
-	content: ''
-}
-
-.d-list[aria-selectable="true"] .d-list-item[aria-selected="true"] {
-	background-color: #428bca;
-}
-
-@font-face {
-	font-family: 'delitefont';
-	src: url('delitefont.eot');
-	src: url('delitefont.eot') format('embedded-opentype'),
-		url('delitefont.woff') format('woff'),
-		url('delitefont.ttf') format('truetype'),
-		url('delitefont.svg') format('svg');
-}
-
-.toggle {
-	width: 24px;
-	height: 24px;
-	padding: 0;
-}
-
-.icon:before {
-	font-family: 'delitefont';
-	font-size: 14px;
-	content: "t";
-}
-
-.d-side-pane {
-	border-right: 1px solid #357ebd;
+#photolist {
+    position: absolute
 }
