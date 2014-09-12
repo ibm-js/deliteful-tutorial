@@ -81,6 +81,17 @@ require([
 		}
 	});
 
+	/*----- Details view -----*/
+
+	photolist.on("click", function (event) {
+		var renderer = photolist.getEnclosingRenderer(event.target);
+		if (renderer && renderer.item) {
+			document.getElementById("photoDetails").innerHTML =
+				renderer.item.description.replace(/href=/ig, "target=\"_blank\" href=");
+			vs.show(detailsView);
+		}
+	});
+
 	/*----- Refresh the photo list at startup -----*/
 
 	refreshPhotoList();
