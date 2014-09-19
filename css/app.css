@@ -17,6 +17,14 @@
     border-radius: 0;
 }
 
+.width100 {
+    width: 100%;
+}
+
+.height100 {
+    height: 100%;
+}
+
 #photolist {
     position: absolute
 }
