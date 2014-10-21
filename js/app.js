@@ -25,7 +25,9 @@ require([
 
 		pi.active = true;
 
-		var url = "http://api.flickr.com/services/feeds/photos_public.gne?format=json&jsoncallback=photosReceived&tags=" +
+		var protocol = window.location.protocol || "http:",
+			url = protocol +
+			"//api.flickr.com/services/feeds/photos_public.gne?format=json&jsoncallback=photosReceived&tags=" +
 			tags + "&tagmode=" + settings.tagMode;
 		script = document.createElement("script");
 		script.type = "text/javascript";
