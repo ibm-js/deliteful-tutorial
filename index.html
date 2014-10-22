@@ -57,10 +57,22 @@
 			</d-linear-layout>
 			<!-- scrollable list -->
 			<div class="fill">
-				<d-list class="width100 height100" id="photolist" copyAllItemProps="true">
+				<d-list class="width100 height100" id="photolist" copyAllItemProps="true" selectionMode="single">
 				</d-list>
 				<d-progress-indicator id="pi"></d-progress-indicator>
 			</div>
+		</d-linear-layout>
+		<!-- details view -->
+		<d-linear-layout id="detailsView">
+			<!-- page content header -->
+			<d-linear-layout vertical="false" class="pageHeader">
+				<div>
+					<button is="d-button" onclick="vs.show(listView, {reverse:true})">Back</button>
+				</div>
+				<div class="fill titleStyle">Photo Details</div>
+			</d-linear-layout>
+			<!-- page content -->
+			<div id="photoDetails" class="fill"></div>
 		</d-linear-layout>
 	</d-view-stack>
 	</body>

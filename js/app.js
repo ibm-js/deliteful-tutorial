@@ -76,5 +76,14 @@ define([
 		}
 	});
 
+	photolist.on("selection-change", function (event) {
+		var renderer = event.renderer;
+		if (renderer && renderer.item) {
+			document.getElementById("photoDetails").innerHTML =
+				renderer.item.description.replace(/href=/ig, "target=\"_blank\" href=");
+			vs.show(detailsView);
+		}
+	});
+
 	refreshPhotoList();
 });
