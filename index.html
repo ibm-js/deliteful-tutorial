@@ -5,7 +5,7 @@
 			  content="width=device-width,initial-scale=1,maximum-scale=1,minimum-scale=1,user-scalable=no"/>
 		<meta name="apple-mobile-web-app-capable" content="yes"/>
 		<link rel="stylesheet" href="css/app.css">
-		<link rel="stylesheet" href="bower_components/delite/themes/defaultapp.css">
+		<link rel="stylesheet" href="bower_components/delite-build/themes/defaultapp.css">
 		<script src="bower_components/requirejs/require.js"></script>
 		<script>
 			require.config({
@@ -17,8 +17,11 @@
 					"ecma402/locales": ["en-us", "fr-fr", "de-de", "it-it", "ko-kr", "pt-br", "es-us", "zh-hk"]
 				}
 			});
-			// Start the application.
-			require(["js/app"]);
+			// Load the minified layer.
+			require(["deliteful-build/layer"], function () {
+				// Start the application.
+				require(["js/app"]);
+			});
 		</script>
 	</head>
 	<body style="display: none">
