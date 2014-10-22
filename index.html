@@ -14,7 +14,7 @@
 					"js": "../js"
 				},
 				config: {
-					"ecma402/locales": ["en-us"]
+					"ecma402/locales": ["en-us", "fr-fr", "de-de", "it-it", "ko-kr", "pt-br", "es-us", "zh-hk"]
 				}
 			});
 			// Start the application.
@@ -23,22 +23,24 @@
 	</head>
 	<body style="display: none">
 
-	<!-- left menu side pane -->
+	<!-- left pane (Settings) -->
 	<d-side-pane mode="push" position="start" id="leftPane">
 		<d-linear-layout class="height100">
 			<!-- left menu header -->
 			<d-linear-layout vertical="false" class="pageHeader">
-				<div class="fill titleStyle">Menu</div>
+				<div class="fill titleStyle">Settings</div>
 			</d-linear-layout>
-			<!-- left menu content -->
-			<d-list id="list" on-selection-change="vs.show(event.newValue.id)" selectionMode="radio">
-				<d-list-store>
-					{"label": "First View", "id": "first" },
-					{"label": "Second View", "id": "second" },
-					{"label": "Third View", "id": "third" }
-					<!--{"label": "Fourth View", "id": "fourth" }-->
-				</d-list-store>
-			</d-list>
+			<d-linear-layout>
+				<div class="formLabel">Tags:</div>
+				<input id="tagsInput" class="formInput" onchange="tagsChanged()">
+				<d-linear-layout vertical="false">
+					<div class="formLabel switchLabel">Tag mode:</div>
+					<d-switch id="tagModeSwitch" uncheckedLabel="Any" checkedLabel="All"
+							  onchange="tagModeChanged()"></d-switch>
+				</d-linear-layout>
+				<div class="formLabel">Language:</div>
+				<d-select id="languageSelect" onchange="languageChanged()"></d-select>
+			</d-linear-layout>
 		</d-linear-layout>
 	</d-side-pane>
 

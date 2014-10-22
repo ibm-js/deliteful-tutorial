@@ -2,10 +2,58 @@ define([
 	"delite/register", "dstore/Memory", "deliteful/list/ItemRenderer", "delite/handlebars", "ecma402/Intl",
 	"delite/theme!delite/themes/{{theme}}/global.css", "deliteful/ViewStack", "deliteful/SidePane",
 	"deliteful/LinearLayout", "deliteful/Button", "deliteful/list/List", "deliteful/ProgressIndicator",
+	"deliteful/Select", "deliteful/Switch",
 	"requirejs-domready/domReady!"
 ], function (register, Memory, ItemRenderer, handlebars, Intl) {
 	register.parse();
 	document.body.style.display = "";
+
+	// Initial settings
+	var settings = {
+		tags: "famous,bridges",
+		tagMode: "all",
+		language: "en-us"
+	}
+
+	// Possible display languages
+	var languages = [
+		{text: "English", value: "en-us"},
+		{text: "French", value: "fr-fr"},
+		{text: "German", value: "de-de"},
+		{text: "Italian", value: "it-it"},
+		{text: "Korean", value: "ko-kr"},
+		{text: "Portuguese (Br)", value: "pt-br"},
+		{text: "Spanish", value: "es-us"},
+		{text: "Trad. Chinese (HK)", value: "zh-hk"}
+	];
+
+	// Initialize elements of the settings view based on initial settings:
+
+	tagsInput.value = settings.tags;
+
+	tagModeSwitch.checked = settings.tagMode === "all" ? true : false;
+
+	languages.forEach(function (l) {
+		languageSelect.store.add(l);
+		languageSelect.setSelected(l, l.value === settings.language);
+	});
+
+	// callbacks called when a settings input field is modified
+
+	tagsChanged = function () {
+		settings.tags = tagsInput.value;
+		refreshPhotoList();
+	};
+
+	tagModeChanged = function () {
+		settings.tagMode = tagModeSwitch.checked ? "all" : "any";
+		refreshPhotoList();
+	};
+
+	languageChanged = function () {
+		settings.language = languageSelect.value;
+		refreshPhotoList();
+	};
 
 	var script;
 
@@ -19,7 +67,7 @@ define([
 
 		var url = (window.location.protocol || "http:") +
 			"//api.flickr.com/services/feeds/photos_public.gne?format=json&jsoncallback=photosReceived&tags=" +
-			tags + "&tagmode=all";
+			tags + "&tagmode=" + settings.tagMode;
 		script = document.createElement("script");
 		script.type = 'text/javascript';
 		script.src = url;
@@ -46,7 +94,7 @@ define([
 
 	refreshPhotoList = function () {
 		photolist.store = new Memory();
-		getPhotos("bridges,famous");
+		getPhotos(settings.tags);
 	};
 
 	photolist.itemRenderer = register("d-photo-item", [HTMLElement, ItemRenderer], {
@@ -65,7 +113,7 @@ define([
 
 		// Formats a date in ISO 8601 format into a more readable format.
 		formatDate: function (d) {
-			return d && new Intl.DateTimeFormat("en-us", {
+			return d && new Intl.DateTimeFormat(settings.language, {
 				year: "numeric",
 				month: "long",
 				day: "numeric",
