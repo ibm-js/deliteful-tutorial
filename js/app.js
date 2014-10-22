@@ -34,6 +34,7 @@ define([
 	tagModeSwitch.checked = settings.tagMode === "all" ? true : false;
 
 	languages.forEach(function (l) {
+		languageSelect.store = new Memory();
 		languageSelect.store.add(l);
 		languageSelect.setSelected(l, l.value === settings.language);
 	});
