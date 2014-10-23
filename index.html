@@ -25,21 +25,6 @@
 
 	<!-- left menu side pane -->
 	<d-side-pane mode="push" position="start" id="leftPane">
-		<d-linear-layout class="height100">
-			<!-- left menu header -->
-			<d-linear-layout vertical="false" class="pageHeader">
-				<div class="fill titleStyle">Menu</div>
-			</d-linear-layout>
-			<!-- left menu content -->
-			<d-list id="list" on-selection-change="vs.show(event.newValue.id)" selectionMode="radio">
-				<d-list-store>
-					{"label": "First View", "id": "first" },
-					{"label": "Second View", "id": "second" },
-					{"label": "Third View", "id": "third" }
-					<!--{"label": "Fourth View", "id": "fourth" }-->
-				</d-list-store>
-			</d-list>
-		</d-linear-layout>
 	</d-side-pane>
 
 	<!-- page content -->
