@@ -1,0 +1,1 @@
+define("deliteful/list/List/nls/Pageable",{"root":{"default-load-message":"Click to load ${pageLength} more items"}});define("deliteful/StarRating/nls/StarRating",{"root":{"aria-valuetext":"${value} stars"}});define('deliteful/nls/layer_root', true);

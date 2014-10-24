@@ -1,0 +1,95 @@
+.pageHeader {
+    background-color: #428bca;
+    color: white;
+    height: 48px;
+    border-bottom: 2px solid #357ebd;
+    padding: 0.3em;
+}
+.titleStyle {
+    text-align: center;
+    line-height: 40px;
+    font-weight: bold;
+    font-size: 16px;
+}
+.d-button {
+    border-radius: 0;
+}
+#photolist {
+    position: absolute
+}
+.d-list-item .d-list-cell {
+    line-height: 20px;
+    height: 100px;
+    width: 100%;
+    overflow-x: hidden;
+}
+.photoThumbnailBg {
+    width: 90px;
+    height: 90px;
+    min-width: 90px;
+    background-color: #000000;
+    text-align: center;
+    line-height: 90px;
+}
+.photoThumbnail {
+    max-width: 90px;
+    max-height: 90px;
+    vertical-align: middle;
+}
+.photoSummary {
+    padding-left: 10px;
+    padding-bottom: 0;
+    margin: 0;
+    position: relative;
+    vertical-align: middle;
+    height: 100%;
+}
+.photoTitle {
+    font-size: 15px;
+    font-weight: bold;
+}
+.publishedTime {
+    font-size: 12px;
+    font-weight: normal;
+}
+.author {
+    font-size: 10px;
+    color: #777;
+    font-weight: normal;
+    position: absolute;
+    bottom: 0;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+.d-progress-indicator {
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    margin: auto;
+}
+#photoDetails {
+    margin: 9px;
+    overflow-y: auto;
+}
+.d-side-pane {
+    border-right: 1px solid #357ebd;
+}
+.formLabel {
+    font-size: 14px;
+    font-weight: bold;
+    margin: 12px 6px 6px 6px;
+}
+.formInput {
+    margin: 6px;
+}
+.d-switch {
+    height: auto;
+    align-self: center;
+    margin: 12px 6px 6px 6px;
+}
+.d-select {
+    align-self: flex-start;
+    margin: 6px;
+}

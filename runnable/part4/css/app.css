@@ -1,0 +1,19 @@
+.pageHeader {
+    background-color: #428bca;
+    color: white;
+    height: 48px;
+    border-bottom: 2px solid #357ebd;
+    padding: 0.3em;
+}
+.titleStyle {
+    text-align: center;
+    line-height: 40px;
+    font-weight: bold;
+    font-size: 16px;
+}
+.d-button {
+    border-radius: 0;
+}
+#photolist {
+    position: absolute
+}

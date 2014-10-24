@@ -1,0 +1,64 @@
+<!DOCTYPE HTML>
+<html>
+	<head>
+		<meta name="viewport"
+			  content="width=device-width,initial-scale=1,maximum-scale=1,minimum-scale=1,user-scalable=no"/>
+		<meta name="apple-mobile-web-app-capable" content="yes"/>
+		<link rel="stylesheet" href="css/app.css">
+		<link rel="stylesheet" href="bower_components/delite/themes/defaultapp.css">
+		<script src="bower_components/requirejs/require.js"></script>
+		<script>
+			require.config({
+				baseUrl: "bower_components",
+				paths: {
+					"js": "../js"
+				},
+				config: {
+					"ecma402/locales": ["en-us"]
+				}
+			});
+			// Start the application.
+			require(["js/app"]);
+		</script>
+	</head>
+	<body style="display: none">
+
+	<!-- left menu side pane -->
+	<d-side-pane mode="push" position="start" id="leftPane">
+	</d-side-pane>
+
+	<!-- page content -->
+	<d-view-stack class="width100 height100" id="vs">
+		<d-linear-layout id="listView">
+			<!-- view content header -->
+			<d-linear-layout vertical="false" class="pageHeader">
+				<div>
+					<button is="d-button" onclick="leftPane.toggle()">Settings</button>
+				</div>
+				<div class="fill titleStyle">Flickr Photo Feed</div>
+				<div>
+					<button is="d-button" onclick="refreshPhotoList()">Refresh</button>
+				</div>
+			</d-linear-layout>
+			<!-- scrollable list -->
+			<div class="fill">
+				<d-list class="width100 height100" id="photolist" copyAllItemProps="true" selectionMode="single">
+				</d-list>
+				<d-progress-indicator id="pi"></d-progress-indicator>
+			</div>
+		</d-linear-layout>
+		<!-- details view -->
+		<d-linear-layout id="detailsView">
+			<!-- page content header -->
+			<d-linear-layout vertical="false" class="pageHeader">
+				<div>
+					<button is="d-button" onclick="vs.show(listView, {reverse:true})">Back</button>
+				</div>
+				<div class="fill titleStyle">Photo Details</div>
+			</d-linear-layout>
+			<!-- page content -->
+			<div id="photoDetails" class="fill"></div>
+		</d-linear-layout>
+	</d-view-stack>
+	</body>
+</html>

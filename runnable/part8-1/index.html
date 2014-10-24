@@ -1,0 +1,84 @@
+<!DOCTYPE HTML>
+<html>
+	<head>
+		<meta name="viewport"
+			  content="width=device-width,initial-scale=1,maximum-scale=1,minimum-scale=1,user-scalable=no"/>
+		<meta name="apple-mobile-web-app-capable" content="yes"/>
+		<link rel="stylesheet" href="css/app.css">
+		<link rel="stylesheet" href="bower_components/delite-build/themes/defaultapp.css">
+		<script src="bower_components/requirejs/require.js"></script>
+		<script>
+			require.config({
+				baseUrl: "bower_components",
+				paths: {
+					"js": "../js"
+				},
+				config: {
+					"ecma402/locales": ["en-us", "fr-fr", "de-de", "it-it", "ko-kr", "pt-br", "es-us", "zh-hk"]
+				}
+			});
+			// Load the minified layer.
+			require(["deliteful-build/layer"], function () {
+				// Start the application.
+				require(["js/app"]);
+			});
+		</script>
+	</head>
+	<body style="display: none">
+
+	<!-- left pane (Settings) -->
+	<d-side-pane mode="push" position="start" id="leftPane">
+		<d-linear-layout class="height100">
+			<!-- left menu header -->
+			<d-linear-layout vertical="false" class="pageHeader">
+				<div class="fill titleStyle">Settings</div>
+			</d-linear-layout>
+			<d-linear-layout>
+				<div class="formLabel">Tags:</div>
+				<input id="tagsInput" class="formInput" onchange="tagsChanged()">
+				<d-linear-layout vertical="false">
+					<div class="formLabel switchLabel">Tag mode:</div>
+					<d-switch id="tagModeSwitch" uncheckedLabel="Any" checkedLabel="All"
+							  onchange="tagModeChanged()"></d-switch>
+				</d-linear-layout>
+				<div class="formLabel">Language:</div>
+				<d-select id="languageSelect" onchange="languageChanged()"></d-select>
+			</d-linear-layout>
+		</d-linear-layout>
+	</d-side-pane>
+
+	<!-- page content -->
+	<d-view-stack class="width100 height100" id="vs">
+		<d-linear-layout id="listView">
+			<!-- view content header -->
+			<d-linear-layout vertical="false" class="pageHeader">
+				<div>
+					<button is="d-button" onclick="leftPane.toggle()">Settings</button>
+				</div>
+				<div class="fill titleStyle">Flickr Photo Feed</div>
+				<div>
+					<button is="d-button" onclick="refreshPhotoList()">Refresh</button>
+				</div>
+			</d-linear-layout>
+			<!-- scrollable list -->
+			<div class="fill">
+				<d-list class="width100 height100" id="photolist" copyAllItemProps="true" selectionMode="single">
+				</d-list>
+				<d-progress-indicator id="pi"></d-progress-indicator>
+			</div>
+		</d-linear-layout>
+		<!-- details view -->
+		<d-linear-layout id="detailsView">
+			<!-- page content header -->
+			<d-linear-layout vertical="false" class="pageHeader">
+				<div>
+					<button is="d-button" onclick="vs.show(listView, {reverse:true})">Back</button>
+				</div>
+				<div class="fill titleStyle">Photo Details</div>
+			</d-linear-layout>
+			<!-- page content -->
+			<div id="photoDetails" class="fill"></div>
+		</d-linear-layout>
+	</d-view-stack>
+	</body>
+</html>
