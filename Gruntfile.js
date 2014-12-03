@@ -27,6 +27,11 @@ module.exports = function (grunt) {
                     'es-us',
                     'zh-hk'
                 ]
+            },
+            map: {
+                jquery: {
+                    'jquery/src/selector': 'jquery/src/selector-native'    // don't pull in sizzle
+                }
             }
         },
         amdbuild: {

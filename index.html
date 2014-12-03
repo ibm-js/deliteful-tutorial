@@ -15,6 +15,11 @@
 				},
 				config: {
 					"ecma402/locales": ["en-us", "fr-fr", "de-de", "it-it", "ko-kr", "pt-br", "es-us", "zh-hk"]
+				},
+				map: {
+					jquery: {
+						"jquery/src/selector": "jquery/src/selector-native"     // don't pull in sizzle
+					}
 				}
 			});
 			// Start the application.
@@ -47,8 +52,7 @@
 	<!-- page content -->
 	<d-view-stack class="width100 height100" id="vs">
 		<d-linear-layout id="listView">
-			<!-- view content header -->
-			<d-linear-layout vertical="false" class="pageHeader">
+			<!-- view content header -->			<d-linear-layout vertical="false" class="pageHeader">
 				<div>
 					<button is="d-button" onclick="leftPane.toggle()">Settings</button>
 				</div>
