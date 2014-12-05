@@ -1,16 +1,14 @@
 /** @module deliteful/ViewStack */
 define(["dcl/dcl",
 	"decor/sniff",
-	"dojo/on",
 	"dojo/Deferred",
 	"dojo/dom-class",
 	"delite/register",
-	"delite/Widget",
 	"delite/DisplayContainer",
 	"delite/theme!./ViewStack/themes/{{theme}}/ViewStack.css",
 	"requirejs-dplugins/css!./ViewStack/transitions/slide.css",
 	"requirejs-dplugins/css!./ViewStack/transitions/reveal.css"],
-	function (dcl, has, on, Deferred, domClass, register, Widget, DisplayContainer) {
+	function (dcl, has, Deferred, domClass, register, DisplayContainer) {
 		function setVisibility(node, val) {
 			if (node) {
 				if (val) {
@@ -314,6 +312,9 @@ define(["dcl/dcl",
 					// Second call (occurs randomly on FF). The following code is not critical but try
 					// to keep a clean DOM tree as much as possible.
 					cleanCSS(item.node);
+					if (item.node !== this._visibleChild) {
+						cleanCSS(this._visibleChild);
+					}
 					domClass.remove(this, "-d-view-stack-transition");
 				}
 			}

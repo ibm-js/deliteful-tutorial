@@ -2,7 +2,6 @@
 define([
 	"dcl/dcl",
 	"delite/register",
-	"dojo/on",
 	"dojo/_base/lang",
 	"dojo/when",
 	"dojo/dom-class",
@@ -17,7 +16,7 @@ define([
 	"./_LoadingPanel",
 	"delite/theme!./List/themes/{{theme}}/List.css",
 	"requirejs-dplugins/has!dojo-bidi?delite/theme!./List/themes/{{theme}}/List_rtl.css"
-], function (dcl, register, on, lang, when, domClass, keys, CustomElement,
+], function (dcl, register, lang, when, domClass, keys, CustomElement,
 		Selection, KeyNav, StoreMap, Scrollable, ItemRenderer, CategoryRenderer, LoadingPanel) {
 
 	/**
@@ -231,24 +230,10 @@ define([
 		 */
 
 		render: function () {
-			// Initialize the widget node and set the container and scrollable node.
-			this.scrollableNode = this.ownerDocument.createElement("div");
-			// Firefox focus the scrollable node when clicking it or tabing: in this case, the list
-			// widget needs to be focused instead.
-			this.own(on(this.scrollableNode, "focus", function () {
-				this.focus();
-			}.bind(this)));
-			this.scrollableNode.className = "d-list-container";
-			this.appendChild(this.scrollableNode);
 			// Aria attributes
 			this.setAttribute("role", this.isAriaListbox ? "listbox" : "grid");
 			// Might be overriden at the cell (renderer renderNode) level when developing custom renderers
 			this.setAttribute("aria-readonly", "true");
-		},
-
-		postRender: function () {
-			// Listen to deactive events.
-			this.on("delite-deactivated", this._listDeactivatedHandler.bind(this));
 		},
 
 		attachedCallback: dcl.superCall(function (sup) {
@@ -272,8 +257,8 @@ define([
 				this.removeAttribute("aria-multiselectable");
 				if (this.selectionMode === "none") {
 					// update aria-selected attribute on unselected items
-					for (var i = 0; i < this.scrollableNode.children.length; i++) {
-						var child = this.scrollableNode.children[i];
+					for (var i = 0; i < this.children.length; i++) {
+						var child = this.children[i];
 						if (child.renderNode.hasAttribute("aria-selected")) {
 							child.renderNode.removeAttribute("aria-selected");
 							domClass.remove(child, this._cssClasses.selected);
@@ -287,8 +272,8 @@ define([
 						this.setAttribute("aria-multiselectable", "true");
 					}
 					// update aria-selected attribute on unselected items
-					for (i = 0; i < this.scrollableNode.children.length; i++) {
-						child = this.scrollableNode.children[i];
+					for (i = 0; i < this.children.length; i++) {
+						child = this.children[i];
 						if (domClass.contains(child, this._cssClasses.item)
 								&& !child.renderNode.hasAttribute("aria-selected")) {
 							child.renderNode.setAttribute("aria-selected", "false");
@@ -342,7 +327,7 @@ define([
 			return function () {
 				// Deliver pending changes to the list and its renderers
 				sup.apply(this, arguments);
-				var renderers = this.scrollableNode.querySelectorAll("."
+				var renderers = this.querySelectorAll("."
 						+ this._cssClasses.item + ", ." + this._cssClasses.category);
 				for (var i = 0; i < renderers.length; i++) {
 					renderers.item(i).deliver();
@@ -357,7 +342,7 @@ define([
 		 * @returns {NodeList}
 		 */
 		getItemRenderers: function () {
-			return this.scrollableNode.querySelectorAll("." + this._cssClasses.item);
+			return this.querySelectorAll("." + this._cssClasses.item);
 		},
 
 		/**
@@ -418,7 +403,7 @@ define([
 		getEnclosingRenderer: function (node) {
 			var currentNode = node;
 			while (currentNode) {
-				if (currentNode.parentNode && currentNode.parentNode === this.scrollableNode) {
+				if (currentNode.parentNode && currentNode.parentNode === this) {
 					break;
 				}
 				currentNode = currentNode.parentNode;
@@ -552,7 +537,11 @@ define([
 		_showLoadingPanel: function () {
 			if (!this._loadingPanel) {
 				this._loadingPanel = new LoadingPanel({message: this.loadingMessage});
-				this.insertBefore(this._loadingPanel, this.scrollableNode);
+				if (this.children[0] !== undefined) {
+					this.insertBefore(this._loadingPanel, this.children[0]);
+				} else {
+					this.appendChild(this._loadingPanel);
+				}
 				this._loadingPanel.startup();
 			}
 		},
@@ -581,12 +570,12 @@ define([
 		 * @private
 		 */
 		_empty: function () {
-			this.findCustomElements(this.scrollableNode).forEach(function (w) {
+			this.findCustomElements(this).forEach(function (w) {
 				if (w.destroy) {
 					w.destroy();
 				}
 			});
-			this.scrollableNode.innerHTML = "";
+			this.innerHTML = "";
 			this._previousFocusedChild = null;
 		},
 
@@ -600,8 +589,8 @@ define([
 		 * @private
 		 */
 		_renderNewItems: function (/*Array*/ items, /*boolean*/atTheTop) {
-			if (!this.scrollableNode.firstElementChild) {
-				this.scrollableNode.appendChild(this._createRenderers(items, 0, items.length, null));
+			if (!this.firstElementChild || this.firstElementChild === this._loadingPanel) {
+				this.appendChild(this._createRenderers(items, 0, items.length, null));
 			} else {
 				if (atTheTop) {
 					if (this._isCategorized()) {
@@ -612,15 +601,15 @@ define([
 							this._removeRenderer(firstRenderer);
 						}
 					}
-					this.scrollableNode.insertBefore(this._createRenderers(items, 0, items.length, null),
-							this.scrollableNode.firstElementChild);
+					this.insertBefore(this._createRenderers(items, 0, items.length, null),
+							this.firstElementChild);
 				} else {
-					this.scrollableNode.appendChild(this._createRenderers(items, 0, items.length,
+					this.appendChild(this._createRenderers(items, 0, items.length,
 							this._getLastRenderer().item));
 				}
 			}
 			// start renderers
-			this.findCustomElements(this.scrollableNode).forEach(function (w) {
+			this.findCustomElements(this).forEach(function (w) {
 				if (w.startup) {
 					w.startup();
 				}
@@ -670,18 +659,18 @@ define([
 		_addItemRenderer: function (renderer, atIndex) {
 			var spec = this._getInsertSpec(renderer, atIndex);
 			if (spec.nodeRef) {
-				this.scrollableNode.insertBefore(renderer, spec.nodeRef);
+				this.insertBefore(renderer, spec.nodeRef);
 				if (spec.addCategoryAfter) {
 					var categoryRenderer = this._createCategoryRenderer(spec.nodeRef.item);
-					this.scrollableNode.insertBefore(categoryRenderer, spec.nodeRef);
+					this.insertBefore(categoryRenderer, spec.nodeRef);
 					categoryRenderer.startup();
 				}
 			} else {
-				this.scrollableNode.appendChild(renderer);
+				this.appendChild(renderer);
 			}
 			if (spec.addCategoryBefore) {
 				categoryRenderer = this._createCategoryRenderer(renderer.item);
-				this.scrollableNode.insertBefore(categoryRenderer, renderer);
+				this.insertBefore(categoryRenderer, renderer);
 				categoryRenderer.startup();
 			}
 			renderer.startup();
@@ -765,7 +754,7 @@ define([
 			if (this._previousFocusedChild && this.getEnclosingRenderer(this._previousFocusedChild) === renderer) {
 				this._previousFocusedChild = null;
 			}
-			this.scrollableNode.removeChild(renderer);
+			this.removeChild(renderer);
 			renderer.destroy();
 		},
 		/*jshint maxcomplexity:10*/
@@ -841,7 +830,7 @@ define([
 		 * @private
 		 */
 		_getFirstRenderer: function () {
-			return this.scrollableNode.querySelector("." + this._cssClasses.item
+			return this.querySelector("." + this._cssClasses.item
 					+ ", ." + this._cssClasses.category);
 		},
 
@@ -852,7 +841,7 @@ define([
 		 * @private
 		 */
 		_getLastRenderer: function () {
-			var renderers = this.scrollableNode
+			var renderers = this
 								.querySelectorAll("." + this._cssClasses.item + ", ." + this._cssClasses.category);
 			return renderers.length ? renderers.item(renderers.length - 1) : null;
 		},
@@ -863,6 +852,7 @@ define([
 		 * Populate the list using the items retrieved from the store.
 		 * @param {Object[]} items items retrieved from the store.
 		 * @protected
+		 * @fires module:delite/Store#query-success
 		 */
 		initItems: function (items) {
 			this._empty();
@@ -953,7 +943,7 @@ define([
 		 * @protected
 		 */
 		getBottomDistance: function (node) {
-			var clientRect = this.scrollableNode.getBoundingClientRect();
+			var clientRect = this.getBoundingClientRect();
 			// Need to use Math.round for IE
 			return Math.round(node.offsetTop +
 				node.offsetHeight -
@@ -1017,9 +1007,12 @@ define([
 		 * Called on "delite-deactivated" event, stores a reference to the focused child.
 		 * @private
 		 */
-		_listDeactivatedHandler: function () {
-			this._previousFocusedChild = this.navigatedDescendant;
-		},
+		_keynavDeactivatedHandler: dcl.superCall(function (sup) {
+			return function () {
+				this._previousFocusedChild = this.navigatedDescendant;
+				sup.call(this);
+			};
+		}),
 
 		// Page Up/Page down key support
 		/**
@@ -1028,7 +1021,7 @@ define([
 		 * @returns {Element}
 		 */
 		_getFirst: function () {
-			var first = this.scrollableNode.querySelector("." + this._cssClasses.cell);
+			var first = this.querySelector("." + this._cssClasses.cell);
 			if (first && this.isAriaListbox && this.isCategoryRenderer(this.getEnclosingRenderer(first))) {
 				first = this.getNext(first, 1);
 			}
@@ -1042,7 +1035,7 @@ define([
 		 */
 		_getLast: function () {
 			// summary:
-			var cells = this.scrollableNode.querySelectorAll("." + this._cssClasses.cell);
+			var cells = this.querySelectorAll("." + this._cssClasses.cell);
 			var last = cells.length ? cells.item(cells.length - 1) : null;
 			if (last && this.isAriaListbox && this.isCategoryRenderer(this.getEnclosingRenderer(last))) {
 				last = this.getNext(last, -1);

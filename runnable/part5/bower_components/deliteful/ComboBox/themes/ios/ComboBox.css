@@ -1,5 +1,5 @@
 /* For now, reuse the bootstrap less variables and functions*/
-.d-combo-box {
+.d-combobox {
   display: inline-block;
   vertical-align: middle;
   margin: 0;
@@ -8,24 +8,38 @@
   font-size: 14px;
   line-height: 1.428571429;
 }
-.d-combo-box::after {
+.d-combobox::after {
+  /* dropdown arrow */
   content: "\25BC";
   padding: 0;
   position: relative;
-  pointer-events: none;
   /* allow clicks to pass through */
+  pointer-events: none;
   font-size: .7em;
   right: 1.7em;
 }
-.d-combo-box-input {
-  height: inherit;
+.d-combobox.d-rtl::after {
+  left: 1.7em;
+  /* restore default */
+  right: auto;
 }
-.d-combo-box-input[disabled],
-fieldset[disabled] .d-combo-box-input {
+.d-combobox[dir="rtl"]::after {
+  left: 1.7em;
+  /* restore default */
+  right: auto;
+}
+.d-combobox-input {
+  height: inherit;
+  /* Necessary for Safari on iOS to avoid misplacement of the dropdown arrow */
+  /* due to the presence of the hidden input which stores the submitted value.*/
+  margin: 0;
+}
+.d-combobox-input[disabled],
+fieldset[disabled] .d-combobox-input {
   opacity: 0.5;
 }
-.d-combo-box-input,
-.d-combo-box-popup-input {
+.d-combobox-input,
+.d-combobox-popup-input {
   padding: 6px 12px;
   border: 1px solid #cccccc;
   border-radius: 4px;
@@ -34,24 +48,19 @@ fieldset[disabled] .d-combo-box-input {
   font-size: inherit;
   line-height: inherit;
 }
-.d-combo-box-input:focus,
-.d-combo-box-popup-input:focus {
+.d-combobox-input:focus,
+.d-combobox-popup-input:focus {
+  /* defined in delite/themes/bootstrap/mixins.less */
   outline: thin dotted;
   outline: 5px auto -webkit-focus-ring-color;
   outline-offset: -2px;
-  /* defined in delite/themes/bootstrap/mixins.less */
 }
-.d-combo-box .d-combo-box-list-hidden {
+.d-combobox .d-combobox-list-hidden {
   display: none;
 }
-.d-combo-box-list > .d-list-container {
-  position: relative;
-  height: auto;
-  width: auto;
-}
-.d-combo-box-list .d-active-descendant {
+.d-combobox-list .d-active-descendant {
+  /* defined in delite/themes/bootstrap/mixins.less */
   outline: thin dotted;
   outline: 5px auto -webkit-focus-ring-color;
   outline-offset: -2px;
-  /* defined in delite/themes/bootstrap/mixins.less */
 }

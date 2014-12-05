@@ -1,13 +1,26 @@
 /** @module delite/KeyNav */
 define([
 	"dcl/dcl",
-	"dojo/dom-class",
-	"delite/keys", // keys.END keys.HOME, keys.LEFT_ARROW etc.
+	"requirejs-dplugins/jquery!attributes/classes",	// addClass(), removeClass()
+	"./keys", // keys.END keys.HOME, keys.LEFT_ARROW etc.
 	"./features",
 	"./Widget",
 	"dpointer/events",		// so can just monitor for "pointerdown"
 	"./activationTracker"	// delite-deactivated event when focus removed from KeyNav and logical descendants
-], function (dcl, domClass, keys, has, Widget) {
+], function (dcl, $, keys, has, Widget) {
+	
+	/**
+	 * Dispatched after the user has selected a different descendant, by clicking, arrow keys,
+	 * or keyboard search.
+	 * @example
+	 * widget.on("keynav-child-navigated", function (evt) {
+	 *	console.log("old value: " + evt.oldValue);
+	 *	console.log("new value: " + evt.newValue);
+	 * }
+	 * @event module:delite/KeyNav#keynav-child-navigated
+	 * @property {number} oldValue - The previously selected item.
+	 * @property {number} newValue - The new selected item.
+	 */
 
 	// Generate map from keyCode to handler name
 	var keycodeToMethod = {};
@@ -154,8 +167,6 @@ define([
 			if (this.focusDescendants) {
 				this.on("delite-deactivated", this._keynavDeactivatedHandler.bind(this));
 
-				// TODO: this looks wrong, focusin shouldn't bubble so we shouldn't get any notification
-				// from descendant focus events.
 				this.on("focusin", function (evt) {
 					var target = self._getTargetElement(evt);
 					if (target === self) {
@@ -302,6 +313,7 @@ define([
 		 * Called when a child is navigated to, either by user clicking it, or programatically by arrow key handling
 		 * code.  It marks that the specified child is the navigated one.
 		 * @param {Element} child
+		 * @fires module:delite/KeyNav#keynav-child-navigated
 		 * @private
 		 */
 		_descendantNavigateHandler: function (child) {
@@ -322,21 +334,9 @@ define([
 				}
 
 				if (this.navigatedDescendant) {
-					domClass.remove(this.navigatedDescendant, "d-active-descendant");
+					$(this.navigatedDescendant).removeClass("d-active-descendant");
 				}
 
-				/**
-				 * Dispatched after the user has selected a different descendant, by clicking, arrow keys,
-				 * or keyboard search.
-				 * @example
-				 * widget.on("keynav-child-navigated", function (evt) {
-				 *	console.log("old value: " + evt.oldValue);
-				 *	console.log("new value: " + evt.newValue);
-				 * }
-				 * @event module:delite/KeyNav#keynav-child-navigated
-				 * @property {number} oldValue - The previously selected item.
-				 * @property {number} newValue - The new selected item.
-				 */
 				this.emit("keynav-child-navigated", {
 					oldValue: this.navigatedDescendant,
 					newValue: child
@@ -345,7 +345,7 @@ define([
 				// mark that the new node is the currently navigated one
 				this.navigatedDescendant = child;
 				if (child) {
-					domClass.add(child, "d-active-descendant");
+					$(child).addClass("d-active-descendant");
 				}
 			}
 		},

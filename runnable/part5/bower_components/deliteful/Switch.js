@@ -4,21 +4,21 @@ define([
 	"dojo/dom-class",
 	"dpointer/events",
 	"delite/register",
-	"deliteful/CheckBox",
+	"deliteful/Checkbox",
 	"delite/handlebars!./Switch/Switch.html",
 	"requirejs-dplugins/has!bidi?./Switch/bidi/Switch",
 	"delite/theme!./Switch/themes/{{theme}}/Switch.css"
-], function (has, domClass, pointer, register, CheckBox, template, BidiSwitch) {
+], function (has, domClass, pointer, register, Checkbox, template, BidiSwitch) {
 
 	/**
 	 * A form-aware switch widget that represents a toggle switch with a sliding knob.
 	 * @example
 	 * <d-switch checkedLabel="ON" uncheckedLabel="OFF" checked="true"></d-switch>
 	 * @class module:deliteful/Switch
-	 * @augments module:deliteful/CheckBox
+	 * @augments module:deliteful/Checkbox
 	 */
-	return register("d-switch", has("bidi") ? [HTMLElement, CheckBox, BidiSwitch] :
-		[HTMLElement, CheckBox], /** @lends module:deliteful/Switch# */ {
+	return register("d-switch", has("bidi") ? [HTMLElement, Checkbox, BidiSwitch] :
+		[HTMLElement, Checkbox], /** @lends module:deliteful/Switch# */ {
 
 		/**
 		 * The label corresponding to the checked state.
@@ -45,10 +45,16 @@ define([
 
 		postRender: function () {
 			this.on("pointerdown", this._pointerDownHandler.bind(this), this._knobGlassNode);
+			this.on("click", this._clickPreventer.bind(this), this._knobGlassNode);
 		},
 
 		destroy: function () {
 			this._cleanHandlers();
+		},
+
+		_clickPreventer: function (e) {
+			e.preventDefault();
+			e.stopPropagation();
 		},
 
 		_pointerDownHandler: function (e) {
@@ -92,13 +98,18 @@ define([
 		},
 
 		_pointerUpHandler: function (e) {
+			var oldCheckedValue = this.checked;
 			if (!this._drag) {
-				return;
+				this.checked = !this.checked;
+			} else {
+				this._drag = false;
+				var cs = parseInt(window.getComputedStyle(this._pushNode).width, 10);
+				var m = parseInt(window.getComputedStyle(this._pushNode).marginLeft, 10);
+				this.checked = cs + m + this._knobWidth / 2 >= this._switchWidth / 2;
 			}
-			this._drag = false;
-			var cs = parseInt(window.getComputedStyle(this._pushNode).width, 10);
-			var m = parseInt(window.getComputedStyle(this._pushNode).marginLeft, 10);
-			this.checked = cs + m + this._knobWidth / 2 >= this._switchWidth / 2;
+			if (this.checked !== oldCheckedValue) {
+				this.emit("change");
+			}
 			e.preventDefault();
 			e.stopPropagation();
 		},
