@@ -49,11 +49,11 @@ When a new version of deliteful is released, the tutorial example can (should?) 
 branch above, plus master.
 * Each branch should be tested by removing `bower_components`, running `bower install` and testing the app.
 * The runnable versions must be updated: for parts 1 to 8-1, do the following:
-** `git checkout part_n_`
-** remove `bower_components`, then `bower install`
-** `git checkout gh-pages`
-** copy the toplevel `bower_components` into `runnable/part_n_`
-** commit+push the changes to `gh-pages`: this should update only the useful files, 
+  * `git checkout part_n_`
+  * remove `bower_components`, then `bower install`
+  * `git checkout gh-pages`
+  * copy the toplevel `bower_components` into `runnable/part_n_`
+  * commit+push the changes to `gh-pages`: this should update only the useful files, 
 as the other files (not necessary for runtime) are not in the Git index. **Of course, 
 if new files/modules have been added in a new release, and are necessary for the tutorial to run, 
 they must be added in Git and committed/pushed too.**
