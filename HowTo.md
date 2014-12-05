@@ -48,11 +48,13 @@ When a new version of deliteful is released, the tutorial example can (should?) 
 * The `bower.json` file must be updated with the new deliteful dependency (e.g. 0.9.x). This must be done in each 
 branch above, plus master.
 * Each branch should be tested by removing `bower_components`, running `bower install` and testing the app.
-* The runnable versions must be updated: for parts 1 to 8-1, do the following:
+* The runnable versions must be updated: for each part _<n>_, do the following:
   * `git checkout part<n>`
   * remove `bower_components`, then `bower install`
+  * for `part8-2` only, additionnally do `grunt build`,
   * `git checkout gh-pages`
   * copy the toplevel `bower_components` into `runnable/part<n>`
+  * for `part8-2` only, also copy the `build` directory (output of `grunt build`)
   * commit+push the changes to `gh-pages`: this should update only the useful files, 
 as the other files (not necessary for runtime) are not in the Git index. **Of course, 
 if new files/modules have been added in a new release, and are necessary for the tutorial to run, 
