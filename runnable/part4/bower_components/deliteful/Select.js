@@ -16,12 +16,17 @@ define([
 	 * element.
 	 * It has the following characteristics:
 	 * * The corresponding custom tag is `<d-select>`.
+	 * * Allows to select one or more items among a number of options (in single
+	 * or multiple selection mode; see `selectionMode`).
 	 * * Store support (limitation: to avoid graphic glitches, the updates to the
 	 * store should not be done while the native dropdown of the select is open).
+	 * The attributes of data items used for the label and value of option elements
+	 * can be customized using the `labelAttr` and `valueAttr` properties, or using
+	 * a `labelFunc` and `valueFunc` (for details, see the documentation of the
+	 * `delite/StoreMap` superclass).
+	 * * Form support (inherits from `delite/FormWidget`).
 	 * * The item rendering has the limitations of the `<option>` elements of the
 	 * native `<select>`, in particular it is text-only.
-	 * 
-	 * TODO: improve doc.
 	 * 
 	 * Remarks:
 	 * * The option items must be added, removed or updated exclusively using
@@ -62,6 +67,8 @@ define([
 	 */
 	return register("d-select", [HTMLElement, FormWidget, StoreMap, Selection],
 		/** @lends module:deliteful/Select# */ {
+		
+		// TODO: improve doc.
 		
 		// Note: the properties `store` and `query` are inherited from delite/Store, and
 		// the property `disabled` is inherited from delite/FormWidget.
@@ -129,6 +136,21 @@ define([
 		template: template,
 		
 		attachedCallback: function () {
+			// If the widget is in a form, reset the initial value of the widget
+			// when the form is reset
+			if (this.valueNode.form) {
+				this.on("reset", function () {
+					this.defer(function () {
+						this.valueNode.selectedIndex =
+							this.selectionMode === "single" ?
+							// First option selected in "single" selection mode, and
+							// no option selected in "multiple" mode
+							0 : -1;
+						this.value = this.valueNode.value;
+					});
+				}.bind(this), this.valueNode.form);
+			}
+			
 			// To provide graphic feedback for focus, react to focus/blur events
 			// on the underlying native select. The CSS class is used instead
 			// of the focus pseudo-class because the browsers give the focus

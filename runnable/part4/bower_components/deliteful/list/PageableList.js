@@ -2,7 +2,6 @@
 define([
 	"dcl/dcl",
 	"delite/register",
-	"dojo/on",
 	"dojo/string",
 	"dojo/when",
 	"dojo/Deferred",
@@ -12,7 +11,7 @@ define([
 	"./Renderer",
 	"delite/handlebars!./List/_PageLoaderRenderer.html",
 	"requirejs-dplugins/i18n!./List/nls/Pageable"
-], function (dcl, register, on, string, when, Deferred, domClass, has,
+], function (dcl, register, string, when, Deferred, domClass, has,
 		List, Renderer, template, messages) {
 
 	/*
@@ -221,7 +220,7 @@ define([
 				this._autoPagingHandle = null;
 			}
 			if (value) {
-				this._autoPagingHandle = this.own(on(this.scrollableNode, "scroll", this._scrollHandler.bind(this)))[0];
+				this._autoPagingHandle = this.on("scroll", this._scrollHandler.bind(this), this);
 			}
 		},
 
@@ -299,7 +298,7 @@ define([
 		//////////// delite/Store methods ///////////////////////////////////////
 
 		computeProperties: function (props) {
-			if (this.pageLength > 0) {
+			if (this.pageLength > 0 && this.attached) {
 				if ("store" in props || "query" in props || "_collection" in props)  {
 					// Initial loading of the list
 					if (this._dataLoaded) {
@@ -334,12 +333,10 @@ define([
 
 		processCollection: dcl.superCall(function (sup) {
 			return function (collection) {
-				if (this.pageLength > 0) {
-					// Store the result of the store query
-					this._collection = collection;
-				} else {
+				if (this.pageLength === 0) {
 					sup.apply(this, arguments);
 				}
+				this._collection = collection;
 			};
 		}),
 
@@ -500,7 +497,7 @@ define([
 				this._previousPageLoader.destroy();
 				this._previousPageLoader = null;
 			} else {
-				this._previousPageLoader.placeAt(this.scrollableNode, "first");
+				this._previousPageLoader.placeAt(this, "first");
 			}
 			// the renderer may have been destroyed and replaced by another one (categorized lists)
 			if (renderer._destroyed) {
@@ -545,7 +542,7 @@ define([
 					this._nextPageLoader.destroy();
 					this._nextPageLoader = null;
 				} else {
-					this._nextPageLoader.placeAt(this.scrollableNode);
+					this._nextPageLoader.placeAt(this);
 				}
 			} else {
 				if (items.length === this._rangeSpec.count) {
@@ -647,7 +644,7 @@ define([
 				_list: this
 			});
 			this._nextPageLoader.deliver();
-			this._nextPageLoader.placeAt(this.scrollableNode);
+			this._nextPageLoader.placeAt(this);
 			this._nextPageLoader.startup();
 		},
 
@@ -675,7 +672,7 @@ define([
 				_list: this
 			});
 			this._previousPageLoader.deliver();
-			this._previousPageLoader.placeAt(this.scrollableNode, "first");
+			this._previousPageLoader.placeAt(this, "first");
 			this._previousPageLoader.startup();
 		},
 
