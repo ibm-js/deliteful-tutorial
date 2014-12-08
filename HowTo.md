@@ -16,17 +16,12 @@ http://github.com/ibm-js/deliteful/tree/master/docs/tutorial.
 The `deliteful-tutorial` repository has several branches, each corresponding to a part (or step) of the tutorial:
 * `part1`: [Part 1 - Getting Started with Deliteful](http://github
 .com/ibm-js/deliteful/tree/master/docs/tutorial/Part1GettingStarted.md)
-* `part4`: [Part 4 - The Photo List View](http://github
-                                        .com/ibm-js/deliteful/tree/master/docs/tutorial/Part4ListView.md)
-* `part5`: [Part 5 - Enhancing the List View](http://github
-                                     .com/ibm-js/deliteful/tree/master/docs/tutorial/Part5CustomRenderer.md)
-* `part6`: [Part 6 - Adding a Details View](http://github
-                                   .com/ibm-js/deliteful/tree/master/docs/tutorial/Part6DetailsView.md)
-* `part7`: [Part 7 - The Settings View](http://github
-                               .com/ibm-js/deliteful/tree/master/docs/tutorial/Part7SettingsView.md)
+* `part4`: [Part 4 - The Photo List View](http://github.com/ibm-js/deliteful/tree/master/docs/tutorial/Part4ListView.md)
+* `part5`: [Part 5 - Enhancing the List View](http://github.com/ibm-js/deliteful/tree/master/docs/tutorial/Part5CustomRenderer.md)
+* `part6`: [Part 6 - Adding a Details View](http://github.com/ibm-js/deliteful/tree/master/docs/tutorial/Part6DetailsView.md)
+* `part7`: [Part 7 - The Settings View](http://github.com/ibm-js/deliteful/tree/master/docs/tutorial/Part7SettingsView.md)
 * `part8-1`: [Part 8.1 - Building the Application for Production - Using Build Versions of Dependency Packages]
-(http://github
-.com/ibm-js/deliteful/blob/master/docs/tutorial/Part8Build.md#using-build-versions-of-dependency-packages)
+(http://github.com/ibm-js/deliteful/blob/master/docs/tutorial/Part8Build.md#using-build-versions-of-dependency-packages)
 * `part8-2`: [Part 8.2 - Building the Application for Production - Building the Application Into a Single Layer]
 (http://github.com/ibm-js/deliteful/blob/master/docs/tutorial/Part8Build.md#building-the-application-into-a-single-layer)
 
