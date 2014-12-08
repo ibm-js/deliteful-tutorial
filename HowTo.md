@@ -14,8 +14,7 @@ http://github.com/ibm-js/deliteful/tree/master/docs/tutorial.
 # Branches
 
 The `deliteful-tutorial` repository has several branches, each corresponding to a part (or step) of the tutorial:
-* `part1`: [Part 1 - Getting Started with Deliteful](http://github
-.com/ibm-js/deliteful/tree/master/docs/tutorial/Part1GettingStarted.md)
+* `part1`: [Part 1 - Getting Started with Deliteful](http://github.com/ibm-js/deliteful/tree/master/docs/tutorial/Part1GettingStarted.md)
 * `part4`: [Part 4 - The Photo List View](http://github.com/ibm-js/deliteful/tree/master/docs/tutorial/Part4ListView.md)
 * `part5`: [Part 5 - Enhancing the List View](http://github.com/ibm-js/deliteful/tree/master/docs/tutorial/Part5CustomRenderer.md)
 * `part6`: [Part 6 - Adding a Details View](http://github.com/ibm-js/deliteful/tree/master/docs/tutorial/Part6DetailsView.md)
