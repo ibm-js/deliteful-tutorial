@@ -1,0 +1,10 @@
+{
+	"name": "deliteful-tutorial",
+	"version": "0.0.1",
+	"dependencies": {
+		"deliteful": "0.7.x",
+		"Font-Awesome": "4.3.x",
+		"requirejs": "2.1.x",
+		"requirejs-domready": "2.0.x"
+	}
+}
