@@ -33,10 +33,11 @@ define([
 
 	tagModeSwitch.checked = settings.tagMode === "all" ? true : false;
 
-	languageSelect.store = new Memory();
-	languages.forEach(function (l) {
-		languageSelect.store.add(l);
-		languageSelect.setSelected(l, l.value === settings.language);
+	languageSelect.source = new Memory({data: languages});
+	languageSelect.on("query-succes", function () {
+		languages.forEach(function (l) {
+			languageSelect.setSelected(l, l.value === settings.language);
+		});
 	});
 
 	// callbacks called when a settings input field is modified
@@ -89,12 +90,12 @@ define([
 	photosReceived = function (json) {
 		// cleanup request
 		requestDone();
-		// show the photos in the list by simply setting the list's store
-		photolist.store = new Memory({data: json.items});
+		// show the photos in the list by simply setting the list's source
+		photolist.source = new Memory({data: json.items});
 	};
 
 	refreshPhotoList = function () {
-		photolist.store = new Memory();
+		photolist.source = new Memory();
 		getPhotos(settings.tags);
 	};
 
