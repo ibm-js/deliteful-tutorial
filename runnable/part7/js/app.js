@@ -33,10 +33,11 @@ define([
 
 	tagModeSwitch.checked = settings.tagMode === "all" ? true : false;
 
-	languageSelect.store = new Memory();
-	languages.forEach(function (l) {
-		languageSelect.store.add(l);
-		languageSelect.setSelected(l, l.value === settings.language);
+	languageSelect.source = new Memory({data: languages});
+	languageSelect.on("query-success", function () {
+		languages.forEach(function (l) {
+			languageSelect.setSelected(l, l.value === settings.language);
+		});
 	});
 
 	// callbacks called when a settings input field is modified
@@ -89,39 +90,39 @@ define([
 	photosReceived = function (json) {
 		// cleanup request
 		requestDone();
-		// show the photos in the list by simply setting the list's store
-		photolist.store = new Memory({data: json.items});
+		// show the photos in the list by simply setting the list's source
+		photolist.source = new Memory({data: json.items});
 	};
 
 	refreshPhotoList = function () {
-		photolist.store = new Memory();
+		photolist.source = new Memory();
 		getPhotos(settings.tags);
 	};
 
 	photolist.itemRenderer = register("d-photo-item", [HTMLElement, ItemRenderer], {
 		template: handlebars.compile("<template>" +
-			"<div attach-point='renderNode'>" +
-			"<div class='photoThumbnailBg'>" +
-			"<img class='photoThumbnail' src='{{item.media.m}}'>" +
-			"</div>" +
-			"<div class='photoSummary'>" +
-			"<div class='photoTitle'>{{item.title}}</div>" +
-			"<div class='publishedTime'>{{this.formatDate(this.item.published)}}</div>" +
-			"<div class='author'>{{item.author}}</div>" +
-			"</div>" +
-			"</div>" +
-			"</template>"),
+		"<div attach-point='renderNode'>" +
+		"<div class='photoThumbnailBg'>" +
+		"<img class='photoThumbnail' src='{{item.media.m}}'>" +
+		"</div>" +
+		"<div class='photoSummary'>" +
+		"<div class='photoTitle'>{{item.title}}</div>" +
+		"<div class='publishedTime'>{{this.formatDate(this.item.published)}}</div>" +
+		"<div class='author'>{{item.author}}</div>" +
+		"</div>" +
+		"</div>" +
+		"</template>"),
 
 		// Formats a date in ISO 8601 format into a more readable format.
 		formatDate: function (d) {
 			return d && new Intl.DateTimeFormat(settings.language, {
-				year: "numeric",
-				month: "long",
-				day: "numeric",
-				hour: "numeric",
-				minute: "numeric",
-				second: "numeric"
-			}).format(new Date(d));
+					year: "numeric",
+					month: "long",
+					day: "numeric",
+					hour: "numeric",
+					minute: "numeric",
+					second: "numeric"
+				}).format(new Date(d));
 		}
 	});
 
