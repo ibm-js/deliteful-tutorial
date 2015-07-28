@@ -34,12 +34,12 @@ define([
 	photosReceived = function (json) {
 		// cleanup request
 		requestDone();
-		// show the photos in the list by simply setting the list's store
-		photolist.store = new Memory({data: json.items});
+		// show the photos in the list by simply setting the list's source
+		photolist.source = new Memory({data: json.items});
 	};
 
 	refreshPhotoList = function () {
-		photolist.store = new Memory();
+		photolist.source = new Memory();
 		getPhotos("bridges,famous");
 	};
 
