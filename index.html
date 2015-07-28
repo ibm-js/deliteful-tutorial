@@ -27,14 +27,11 @@
 			<d-linear-layout vertical="false" class="pageHeader">
 				<div class="fill titleStyle">Menu</div>
 			</d-linear-layout>
-			<d-store id="menu_data">
+			<!-- left menu content -->
+			<d-list id="list" on-selection-change="vs.show(event.newValue.id)" selectionMode="radio">
 				{"label": "First View", "id": "first" },
 				{"label": "Second View", "id": "second" },
 				{"label": "Third View", "id": "third" }
-				<!--{"label": "Fourth View", "id": "fourth" }-->
-			</d-store>
-			<!-- left menu content -->
-			<d-list id="list" store="menu_data" on-selection-change="vs.show(event.newValue.id)" selectionMode="radio">
 			</d-list>
 		</d-linear-layout>
 	</d-side-pane>
@@ -62,20 +59,7 @@
 				<!-- fill the third view with content -->
 				<span>3rd view</span>
 			</div>
-			<!-- other views 
-			<div id="fourth">
-			</div>
-			-->
 		</d-view-stack>
-		<!-- page content footer -->
-		<!-- 
-		<d-linear-layout vertical="false" class="pageFooter">
-			<div class="fill"><button is="d-button"></button></div>
-			<div class="fill"><button is="d-button"></button></div>
-			<div class="fill"><button is="d-button"></button></div>
-			<div class="fill"><button is="d-button"></button></div>
-		</d-linear-layout>
-		-->
 	</d-linear-layout>
 	</body>
 </html>
